@@ -2,7 +2,13 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
     
+    // меняем цвет StatusBar на белый
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     // MARK: - IB Outlets
+    @IBOutlet weak private var questionTitleLabel: UILabel!
     @IBOutlet weak private var indexLabel: UILabel!
     @IBOutlet weak private var questionLabel: UILabel!
     
@@ -79,6 +85,13 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // формат шрифтов текстовых полей
+        questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        indexLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        questionLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
+        
+        // запускаем первый раунд квиза
         startNewQuiz()
     }
     
@@ -115,9 +128,12 @@ final class MovieQuizViewController: UIViewController {
     
     // метод вывода на экран текущего вопроса
     private func show(quiz step: QuizStepViewModel) {
+        // включаем кнопки Да/Нет
+        yesButton.isEnabled = true
+        noButton.isEnabled = true
+        
         indexLabel.text = step.questionNumber
         previewImage.layer.borderWidth = 0
-        previewImage.layer.cornerRadius = 0
         previewImage.image = step.image
         questionLabel.text = step.question
     }
@@ -127,11 +143,16 @@ final class MovieQuizViewController: UIViewController {
         randomQuestions = questions.shuffled()
     }
     
-    // реакция на ответ на вопрос и переход к следующему этапу
+    // функция отображения реакции на ответ на вопрос и переход к следующему этапу
     private func showAnswerResult(isCorrect: Bool) {
+        // отключаем кнопки Да/Нет до показа следующего вопроса
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
+        
+        // рисуем рамку нужного цвета
         previewImage.layer.masksToBounds = true
         previewImage.layer.borderWidth = 8
-        previewImage.layer.cornerRadius = 6
+        previewImage.layer.cornerRadius = 20
         previewImage.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {// многозначительная пауза перед показом следующего вопроса (или результата квиза)

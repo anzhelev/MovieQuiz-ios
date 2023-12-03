@@ -29,18 +29,18 @@
                                 <rect key="frame" x="20" y="58" width="374" height="804"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q4T-b9-295">
-                                        <rect key="frame" x="0.0" y="0.0" width="374" height="24"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" text="Вопрос:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SAs-H3-5Ut" userLabel="Question Title Label">
-                                                <rect key="frame" x="0.0" y="0.0" width="333.5" height="24"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="333.5" height="23.5"/>
                                                 <color key="backgroundColor" name="YP Black"/>
                                                 <color key="tintColor" name="YP White"/>
-                                                <fontDescription key="fontDescription" name="AcademyEngravedLetPlain" family="Academy Engraved LET" pointSize="20"/>
+                                                <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="0/10" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rNn-PD-wN2" userLabel="Index Label">
-                                                <rect key="frame" x="333.5" y="0.0" width="40.5" height="24"/>
+                                                <rect key="frame" x="333.5" y="0.0" width="40.5" height="23.5"/>
                                                 <color key="backgroundColor" name="YP Black"/>
                                                 <color key="tintColor" name="YP White"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
@@ -48,13 +48,19 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
+                                        <color key="backgroundColor" name="YP Black"/>
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lq6-Lf-FJ0" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="59" width="374" height="561"/>
+                                        <rect key="frame" x="0.0" y="58.5" width="374" height="561"/>
                                         <color key="backgroundColor" name="YP White"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="lq6-Lf-FJ0" secondAttribute="height" multiplier="2:3" id="Ose-a9-XwP"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Текущий вопрос" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YWy-x2-OqG" userLabel="Question Label">
                                         <rect key="frame" x="0.0" y="655" width="374" height="54"/>
@@ -108,6 +114,7 @@
                                         </constraints>
                                     </stackView>
                                 </subviews>
+                                <color key="backgroundColor" name="YP Black"/>
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -124,6 +131,7 @@
                         <outlet property="noButton" destination="4M6-1f-ZWZ" id="hLX-Ff-d50"/>
                         <outlet property="previewImage" destination="lq6-Lf-FJ0" id="dFe-iD-Nxc"/>
                         <outlet property="questionLabel" destination="YWy-x2-OqG" id="SNV-N9-WDB"/>
+                        <outlet property="questionTitleLabel" destination="SAs-H3-5Ut" id="lEX-sI-2Pv"/>
                         <outlet property="yesButton" destination="i4s-k0-5oS" id="ylC-jM-nig"/>
                     </connections>
                 </viewController>
