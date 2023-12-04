@@ -25,7 +25,7 @@ final class MovieQuizViewController: UIViewController {
     struct QuizStepViewModel {
         let image: UIImage // картинка с афишей фильма с типом UIImage
         let question: String // вопрос о рейтинге квиза
-        let questionNumber: String // строка с порядковым номером этого вопроса (ex. "1/10")
+        let questionNumber: String // строка с порядковым номером текущего вопроса
     }
     
     // структура данных для массива вопросов
@@ -86,8 +86,10 @@ final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // формат шрифтов текстовых полей
+        // формат шрифтов текстовых полей и кнопок
         questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        noButton.titleLabel?.font = UIFont(name: "SDisplay-Medium", size: 20)
+        yesButton.titleLabel?.font = UIFont(name: "SDisplay-Medium", size: 20)
         indexLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
         questionLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
         
@@ -152,7 +154,6 @@ final class MovieQuizViewController: UIViewController {
         // рисуем рамку нужного цвета
         previewImage.layer.masksToBounds = true
         previewImage.layer.borderWidth = 8
-        previewImage.layer.cornerRadius = 20
         previewImage.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {// многозначительная пауза перед показом следующего вопроса (или результата квиза)
