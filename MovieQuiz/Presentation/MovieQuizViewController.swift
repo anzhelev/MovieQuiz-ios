@@ -22,14 +22,14 @@ final class MovieQuizViewController: UIViewController {
     private var correctAnswers = 0 // счетчик правильных ответов
     
     // вью модель для состояния "Вопрос показан"
-    struct QuizStepViewModel {
+    private struct QuizStepViewModel {
         let image: UIImage // картинка с афишей фильма с типом UIImage
         let question: String // вопрос о рейтинге квиза
         let questionNumber: String // строка с порядковым номером текущего вопроса
     }
     
     // структура данных для массива вопросов
-    struct QuizQuestion {
+    private struct QuizQuestion {
         let image: String // название фильма / картинки
         let text: String // вопрос по фильму
         let correctAnswer: Bool // правильный ответ на вопрос Да / Нет
