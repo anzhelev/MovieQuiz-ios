@@ -21,66 +21,10 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex = 0 // индекс текущего вопроса
     private var correctAnswers = 0 // счетчик правильных ответов
     
-    // вью модель для состояния "Вопрос показан"
-    private struct QuizStepViewModel {
-        let image: UIImage // картинка с афишей фильма с типом UIImage
-        let question: String // вопрос о рейтинге квиза
-        let questionNumber: String // строка с порядковым номером текущего вопроса
-    }
+
     
-    // структура данных для массива вопросов
-    private struct QuizQuestion {
-        let image: String // название фильма / картинки
-        let text: String // вопрос по фильму
-        let correctAnswer: Bool // правильный ответ на вопрос Да / Нет
-    }
+
     
-    // массив вопросов
-    private let questions: [QuizQuestion] = [
-        QuizQuestion(
-            image: "The Godfather",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "The Dark Knight",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "Kill Bill",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "The Avengers",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "Deadpool",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "The Green Knight",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "Old",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),
-        QuizQuestion(
-            image: "The Ice Age Adventures of Buck Wild",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),
-        QuizQuestion(
-            image: "Tesla",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),
-        QuizQuestion(
-            image: "Vivarium",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false)
-    ]
-    
-    // массив вопросов в рандомном порядке
-    private var randomQuestions: [QuizQuestion] = []
     
     // MARK: - View Life Cycles
     override func viewDidLoad() {
@@ -100,7 +44,7 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - IB Actions
     // обработка нажатия кнопки НЕТ
     @IBAction private func noButtonDidTapped(_ sender: Any) {
-        if !randomQuestions[currentQuestionIndex].correctAnswer {
+        if !questions[currentQuestionIndex].correctAnswer {
             correctAnswers += 1
             showAnswerResult(isCorrect: true)
         } else {
@@ -110,7 +54,7 @@ final class MovieQuizViewController: UIViewController {
     
     // обработка нажатия кнопки ДА
     @IBAction private func yesButtonDidTapped(_ sender: Any) {
-        if randomQuestions[currentQuestionIndex].correctAnswer {
+        if questions[currentQuestionIndex].correctAnswer {
             correctAnswers += 1
             showAnswerResult(isCorrect: true)
         } else {
@@ -124,7 +68,7 @@ final class MovieQuizViewController: UIViewController {
         let currentStep = QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
             question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(randomQuestions.count)")
+            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
         return currentStep
     }
     
@@ -140,10 +84,6 @@ final class MovieQuizViewController: UIViewController {
         questionLabel.text = step.question
     }
     
-    // функция заполнения массива вопросов в рандомном порядке
-    private func questionsRandomizer() {
-        randomQuestions = questions.shuffled()
-    }
     
     // функция отображения реакции на ответ на вопрос и переход к следующему этапу
     private func showAnswerResult(isCorrect: Bool) {
@@ -156,18 +96,20 @@ final class MovieQuizViewController: UIViewController {
         previewImage.layer.borderWidth = 8
         previewImage.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {// многозначительная пауза перед показом следующего вопроса (или результата квиза)
+        // многозначительная пауза перед показом следующего вопроса (или результата квиза)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {[weak self] in // слабая ссылка на self
+            guard let self = self else { return } // разворачиваем слабую ссылку
             self.showNextQuestionOrResults()
         }
     }
     
     // функция перехода к следующему вопросу или к показу результатов квиза
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == randomQuestions.count - 1 { // если вопрос был последним, покажем результаты
+        if currentQuestionIndex == questions.count - 1 { // если вопрос был последним, покажем результаты
             quizResult()
         } else {// если остались еще вопросы, переходим к следующему
             currentQuestionIndex += 1
-            let nextQuestion = convert(model: randomQuestions[currentQuestionIndex])
+            let nextQuestion = convert(model: questions[currentQuestionIndex])
             show(quiz: nextQuestion)
         }
     }
@@ -176,9 +118,10 @@ final class MovieQuizViewController: UIViewController {
     private func quizResult() {
         // создаём всплывающее окно с кнопкой
         let alert = UIAlertController(title: "Раунд окончен!",
-                                      message: "Ваш результат: \(correctAnswers)/\(randomQuestions.count)",
+                                      message: "Ваш результат: \(correctAnswers)/\(questions.count)",
                                       preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Сыграть еще раз", style: .default, handler: { _ in
+        alert.addAction(UIAlertAction(title: "Сыграть еще раз", style: .default, handler: {[weak self] _ in // слабая ссылка на self
+            guard let self = self else { return } // разворачиваем слабую ссылку
             self.startNewQuiz()
         }))
         
@@ -191,7 +134,7 @@ final class MovieQuizViewController: UIViewController {
         questionsRandomizer()
         currentQuestionIndex = 0
         correctAnswers = 0
-        let firstQuestion = convert(model: randomQuestions[currentQuestionIndex])
+        let firstQuestion = convert(model: questions[currentQuestionIndex])
         show(quiz: firstQuestion)
     }
 }
