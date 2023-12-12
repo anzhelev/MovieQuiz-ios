@@ -9,7 +9,7 @@ import Foundation
 
 
 // структура данных для массива вопросов
-private struct QuizQuestion {
+struct QuizQuestion {
     let image: String // название фильма / картинки
     let text: String // вопрос по фильму
     let correctAnswer: Bool // правильный ответ на вопрос Да / Нет
