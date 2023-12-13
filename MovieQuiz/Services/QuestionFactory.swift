@@ -9,8 +9,8 @@ import Foundation
 
 class QuestionFactory: QuestionFactoryProtocol {
     
-    
     weak var delegate: QuestionFactoryDelegate?
+    
     
     // массив вопросов
     private let questions: [QuizQuestion] = [

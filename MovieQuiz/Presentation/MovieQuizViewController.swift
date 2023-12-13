@@ -21,15 +21,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var correctAnswers = 0 // счетчик правильных ответов
     
     private let questionsAmount: Int = 10
-    private let questionFactory = QuestionFactory()
-//    private let questionFactory: QuestionFactoryProtocol?
+//    private let questionFactory = QuestionFactory()
+    private var questionFactory: QuestionFactoryProtocol? = QuestionFactory()
     private var currentQuestion: QuizQuestion?
 
     // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
+        questionFactory?.delegate = self
+        questionFactory?.requestNextQuestion()
+        
+ 
         
         // формат шрифтов текстовых полей и кнопок
         questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
@@ -38,11 +41,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         indexLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
         questionLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
         
-        
-        questionFactory.delegate = self
-        
-        
-        questionFactory.requestNextQuestion()
+
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -132,7 +131,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             
-            self.questionFactory.requestNextQuestion()
+            self.questionFactory?.requestNextQuestion()
             
         }
 
@@ -185,7 +184,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 
             } else {// если остались еще вопросы, переходим к следующему
                 currentQuestionIndex += 1
-                self.questionFactory.requestNextQuestion()
+                self.questionFactory?.requestNextQuestion()
             }
         }
         
