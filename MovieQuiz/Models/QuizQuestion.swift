@@ -5,9 +5,6 @@
 //  Created by Andrey Zhelev on 10.12.2023.
 //
 
-import Foundation
-
-
 // структура данных для массива вопросов
 struct QuizQuestion {
     let image: String // название фильма / картинки

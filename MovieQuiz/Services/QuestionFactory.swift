@@ -5,12 +5,9 @@
 //  Created by Andrey Zhelev on 10.12.2023.
 //
 
-import Foundation
-
 class QuestionFactory: QuestionFactoryProtocol {
     
     weak var delegate: QuestionFactoryDelegate?
-    
     
     // массив вопросов
     private let questions: [QuizQuestion] = [
@@ -55,7 +52,6 @@ class QuestionFactory: QuestionFactoryProtocol {
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false)
     ]
-
     
     func requestNextQuestion() {
         guard let index = (0..<questions.count).randomElement() else {
@@ -66,6 +62,4 @@ class QuestionFactory: QuestionFactoryProtocol {
         let question = questions[safe: index]
         delegate?.didReceiveNextQuestion(question: question)
     }
-    
-
 }

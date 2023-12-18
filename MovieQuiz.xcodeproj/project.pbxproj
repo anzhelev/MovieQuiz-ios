@@ -26,6 +26,7 @@
 		D45163582B28CC55003BC90B /* QuestionFactoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45163572B28CC55003BC90B /* QuestionFactoryDelegate.swift */; };
 		D46FA26A2B29B0A300143728 /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46FA2692B29B0A300143728 /* AlertModel.swift */; };
 		D46FA26C2B29B21700143728 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46FA26B2B29B21700143728 /* AlertPresenter.swift */; };
+		D4DE92ED2B2FA6A500DE7514 /* AletPresenterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DE92EC2B2FA6A500DE7514 /* AletPresenterDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		D45163572B28CC55003BC90B /* QuestionFactoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactoryDelegate.swift; sourceTree = "<group>"; };
 		D46FA2692B29B0A300143728 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		D46FA26B2B29B21700143728 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
+		D4DE92EC2B2FA6A500DE7514 /* AletPresenterDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AletPresenterDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,8 +69,9 @@
 			isa = PBXGroup;
 			children = (
 				AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */,
-				AD1ABAB72831907B00B3E448 /* Main.storyboard */,
 				D46FA26B2B29B21700143728 /* AlertPresenter.swift */,
+				D4DE92EC2B2FA6A500DE7514 /* AletPresenterDelegate.swift */,
+				AD1ABAB72831907B00B3E448 /* Main.storyboard */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -236,6 +239,7 @@
 				D45163582B28CC55003BC90B /* QuestionFactoryDelegate.swift in Sources */,
 				AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */,
 				D45163502B264921003BC90B /* QuizStepViewModel.swift in Sources */,
+				D4DE92ED2B2FA6A500DE7514 /* AletPresenterDelegate.swift in Sources */,
 				D45163542B26495B003BC90B /* QuizQuestion.swift in Sources */,
 				D451634D2B26430F003BC90B /* QuestionFactory.swift in Sources */,
 				AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */,

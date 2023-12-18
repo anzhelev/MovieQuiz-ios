@@ -5,9 +5,7 @@
 //  Created by Andrey Zhelev on 10.12.2023.
 //
 
-import Foundation
 import UIKit
-
 
 // вью модель для состояния "Вопрос показан"
  struct QuizStepViewModel {

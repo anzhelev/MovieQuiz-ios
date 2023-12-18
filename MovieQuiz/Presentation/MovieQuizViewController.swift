@@ -21,18 +21,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var correctAnswers = 0 // счетчик правильных ответов
     
     private let questionsAmount: Int = 10
-//    private let questionFactory = QuestionFactory()
     private var questionFactory: QuestionFactoryProtocol? = QuestionFactory()
     private var currentQuestion: QuizQuestion?
-
+    private var gameOverAlert = AlertPresenter()
+    
     // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
         
         questionFactory?.delegate = self
+        gameOverAlert.delegate = self
         questionFactory?.requestNextQuestion()
-        
- 
         
         // формат шрифтов текстовых полей и кнопок
         questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
@@ -40,8 +39,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         yesButton.titleLabel?.font = UIFont(name: "SDisplay-Medium", size: 20)
         indexLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
         questionLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
-        
-
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -49,7 +46,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         guard let question = question else {
             return
         }
-
+        
         currentQuestion = question
         let viewModel = convert(model: question)
         DispatchQueue.main.async {[weak self] in
@@ -57,36 +54,25 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
+    // MARK: - AlertPresenterDelegate
+    func startNewQuiz() {
+        currentQuestionIndex = 0
+        correctAnswers = 0
+        questionFactory?.requestNextQuestion()
+    }
+    
     // MARK: - IB Actions
     // обработка нажатия кнопки НЕТ
     @IBAction private func noButtonDidTapped(_ sender: Any) {
-        
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        
-        if !currentQuestion.correctAnswer {
-            correctAnswers += 1
-            showAnswerResult(isCorrect: true)
-        } else {
-            showAnswerResult(isCorrect: false)
+        if let currentQuestion = currentQuestion {
+            showAnswerResult(isCorrect: !currentQuestion.correctAnswer)
         }
     }
     
     // обработка нажатия кнопки ДА
     @IBAction private func yesButtonDidTapped(_ sender: Any) {
-        
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        
-        
-        
-        if currentQuestion.correctAnswer {
-            correctAnswers += 1
-            showAnswerResult(isCorrect: true)
-        } else {
-            showAnswerResult(isCorrect: false)
+        if let currentQuestion = currentQuestion {
+            showAnswerResult(isCorrect: currentQuestion.correctAnswer)
         }
     }
     
@@ -99,10 +85,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
         return currentStep
     }
-   
     
-    
-    // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
+    // приватный метод вывода на экран нового вопроса
     private func show(quiz step: QuizStepViewModel) {
         yesButton.isEnabled = true
         noButton.isEnabled = true
@@ -112,47 +96,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         indexLabel.text = step.questionNumber
         previewImage.layer.borderWidth = 0
     }
-   
-    
-    // приватный метод для показа результатов раунда квиза
-    // принимает вью модель QuizResultsViewModel и ничего не возвращает
-    private func show(quiz result: QuizResultsViewModel) {
-        // включаем кнопки Да/Нет
-
-        
-  
-        
-        let alert = UIAlertController(
-            title: result.title,
-            message: result.text,
-            preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            
-            self.questionFactory?.requestNextQuestion()
-            
-        }
-
-//        alert.addAction(UIAlertAction(title: "Сыграть еще раз", style: .default, handler: {[weak self] _ in // слабая ссылка на self
-//            guard let self = self else { return } // разворачиваем слабую ссылку
-//            
-//            
-//        }))
-        
-        
-        alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
-
-    }
-    
     
     // функция отображения реакции на ответ на вопрос и переход к следующему этапу
     private func showAnswerResult(isCorrect: Bool) {
         // отключаем кнопки Да/Нет до показа следующего вопроса
         yesButton.isEnabled = false
         noButton.isEnabled = false
+        
+        // увеличиваем счетчик правильных ответов, если нужно
+        if isCorrect {
+            correctAnswers += 1
+        }
         
         // рисуем рамку нужного цвета
         previewImage.layer.masksToBounds = true
@@ -168,48 +122,21 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // функция перехода к следующему вопросу или к показу результатов квиза
     private func showNextQuestionOrResults() {
-//        if currentQuestionIndex == questionsAmount - 1 { // если вопрос был последним, покажем результаты
-//            quizResult()
+        if currentQuestionIndex == questionsAmount - 1 {// если вопрос был последним, покажем результаты
+            let text = correctAnswers == questionsAmount ?
+            "Поздравляем, вы ответили на 10 из 10!" :
+            "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
             
-            if currentQuestionIndex == questionsAmount - 1 {
-                let text = correctAnswers == questionsAmount ?
-                "Поздравляем, вы ответили на 10 из 10!" :
-                "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
-                
-                let viewModel = QuizResultsViewModel( // 2
-                    title: "Этот раунд окончен!",
-                    text: text,
-                    buttonText: "Сыграть ещё раз")
-                show(quiz: viewModel) // 3
-                
-            } else {// если остались еще вопросы, переходим к следующему
-                currentQuestionIndex += 1
-                self.questionFactory?.requestNextQuestion()
-            }
+            let alert = AlertModel(
+                title: "Этот раунд окончен!",
+                message: text,
+                buttonText: "Сыграть ещё раз"
+            )
+            gameOverAlert.showResult(show: alert, where: self)
+            
+        } else {// если остались еще вопросы, переходим к следующему
+            currentQuestionIndex += 1
+            self.questionFactory?.requestNextQuestion()
         }
-        
-        //    // функция отображения результатов квиза
-        //    private func quizResult() {
-        //        // создаём всплывающее окно с кнопкой
-        //        let alert = UIAlertController(title: "Раунд окончен!",
-        //                                      message: "Ваш результат: \(correctAnswers)/\(questions.count)",
-        //                                      preferredStyle: .alert)
-        //        alert.addAction(UIAlertAction(title: "Сыграть еще раз", style: .default, handler: {[weak self] _ in // слабая ссылка на self
-        //            guard let self = self else { return } // разворачиваем слабую ссылку
-        //            self.startNewQuiz()
-        //        }))
-        //
-        //        // показываем всплывающее окно
-        //        self.present(alert, animated: true, completion: nil)
-        //    }
-        
-        // функция запуска нового раунда квиза
-        //    private func startNewQuiz() {
-        ////        questionsRandomizer()
-        //        currentQuestionIndex = 0
-        //        correctAnswers = 0
-        //        let firstQuestion = convert(model: questions[currentQuestionIndex])
-        //        show(quiz: firstQuestion)
-        //    }
-        
     }
+}
