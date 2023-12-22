@@ -24,6 +24,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var questionFactory: QuestionFactoryProtocol? = QuestionFactory()
     private var currentQuestion: QuizQuestion?
     private var gameOverAlert = AlertPresenter()
+    private var statisticService = StatisticServiceImplementation()
     
     // MARK: - View Life Cycles
     override func viewDidLoad() {
@@ -32,6 +33,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory?.delegate = self
         gameOverAlert.delegate = self
         questionFactory?.requestNextQuestion()
+        statisticService.resetStatistics()
+        
         
         // формат шрифтов текстовых полей и кнопок
         questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
@@ -123,9 +126,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // функция перехода к следующему вопросу или к показу результатов квиза
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {// если вопрос был последним, покажем результаты
-            let text = correctAnswers == questionsAmount ?
-            "Поздравляем, вы ответили на 10 из 10!" :
-            "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
+            // обновляем статистику раундов
+            statisticService.update(game:
+                                        GameRecord(
+                                            correct: correctAnswers,
+                                            total: questionsAmount,
+                                            date: Date())
+            )
+            
+            var text = correctAnswers == questionsAmount ?
+            "Поздравляем, у вас 10 из 10!\n" :
+            "Ваш результат: \(correctAnswers)/\(questionsAmount)\n"
+
+            text.append(statisticService.statistics)
             
             let alert = AlertModel(
                 title: "Этот раунд окончен!",
@@ -133,8 +146,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 buttonText: "Сыграть ещё раз"
             )
             gameOverAlert.showResult(show: alert, where: self)
-            
-        } else {// если остались еще вопросы, переходим к следующему
+        } else {  // если остались еще вопросы, переходим к следующему
             currentQuestionIndex += 1
             self.questionFactory?.requestNextQuestion()
         }
