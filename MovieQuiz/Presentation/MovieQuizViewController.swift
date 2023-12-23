@@ -125,7 +125,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {// если вопрос был последним, покажем результаты
             // обновляем статистику раундов
-            statisticService.update(game:
+            statisticService.store(game:
                                         GameRecord(
                                             correct: correctAnswers,
                                             total: questionsAmount,

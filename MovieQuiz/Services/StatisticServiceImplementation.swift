@@ -65,7 +65,7 @@ final class StatisticServiceImplementation: StatisticService {
     
     // MARK: - Methods
     // обновляем данные статистики после завершения раунда
-    func update(game score: GameRecord) {
+    func store(game score: GameRecord) {
         gamesCount += 1
         let totalAmount = userDefaults.integer(forKey: Keys.totalQuestionAmount.rawValue)
         let correctAnswers = userDefaults.integer(forKey: Keys.totalCorrectAnswers.rawValue)
@@ -73,7 +73,7 @@ final class StatisticServiceImplementation: StatisticService {
         userDefaults.set(score.correct + correctAnswers, forKey: Keys.totalCorrectAnswers.rawValue)
         userDefaults.set(score.total + totalAmount, forKey: Keys.totalQuestionAmount.rawValue)
         
-        if score.isBetterThan(bestGame) {
+        if score.isBetterThan(bestGame) { // обновляем запись о рекорде, если достигнут лучший результат
             bestGame = score
         }
     }
