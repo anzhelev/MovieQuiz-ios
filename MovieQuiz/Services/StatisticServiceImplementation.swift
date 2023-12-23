@@ -84,11 +84,4 @@ final class StatisticServiceImplementation: StatisticService {
         df.dateFormat = "dd.MM.YY HH:mm"
         return df.string(from: date)
     }
-    
-    //    func resetStatistics() { // сброс статистики
-    //        userDefaults.set(nil, forKey: Keys.totalCorrectAnswers.rawValue)
-    //        userDefaults.set(nil, forKey: Keys.totalQuestionAmount.rawValue)
-    //        userDefaults.set(nil, forKey: Keys.gamesCount.rawValue)
-    //        userDefaults.set(nil, forKey: Keys.bestGame.rawValue)
-    //    }
 }

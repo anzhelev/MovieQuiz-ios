@@ -33,7 +33,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory?.delegate = self
         gameOverAlert.delegate = self
         questionFactory?.requestNextQuestion()
-//        statisticService.resetStatistics() // обнуляем статистику на старте приложения (для тестирования)
                 
         // формат шрифтов текстовых полей и кнопок
         questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
