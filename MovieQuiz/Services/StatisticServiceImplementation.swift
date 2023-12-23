@@ -8,26 +8,12 @@ import Foundation
 
 final class StatisticServiceImplementation: StatisticService {
     
+    // MARK: - Properties    
+    // добавляем ключи и константу для удобства работы с UserDefaults
+    private enum Keys: String {case totalCorrectAnswers, totalQuestionAmount, bestGame, gamesCount}
     private let userDefaults = UserDefaults.standard
     
-    private enum Keys: String {
-        case totalCorrectAnswers, totalQuestionAmount, bestGame, gamesCount
-    }
-    
-    func update(game score: GameRecord) {
-        gamesCount += 1
-        let totalAmount = userDefaults.integer(forKey: Keys.totalQuestionAmount.rawValue)
-        let correctAnswers = userDefaults.integer(forKey: Keys.totalCorrectAnswers.rawValue)
-        
-        userDefaults.set(score.correct + correctAnswers, forKey: Keys.totalCorrectAnswers.rawValue)
-        userDefaults.set(score.total + totalAmount, forKey: Keys.totalQuestionAmount.rawValue)
-        
-        if score.isBetterThan(bestGame) {
-            bestGame = score
-        }
-    }
-    
-    var totalAccuracy: Double {
+    var totalAccuracy: Double { // вычисляем общий процент правильных ответов
         get {
             let totalAmount = userDefaults.integer(forKey: Keys.totalQuestionAmount.rawValue)
             let correctAnswers = userDefaults.integer(forKey: Keys.totalCorrectAnswers.rawValue)
@@ -39,7 +25,7 @@ final class StatisticServiceImplementation: StatisticService {
         }
     }
     
-    var gamesCount: Int {
+    var gamesCount: Int { // счетчик завершенных раундов
         get {
             let count = userDefaults.integer(forKey: Keys.gamesCount.rawValue)
             return count
@@ -49,7 +35,7 @@ final class StatisticServiceImplementation: StatisticService {
         }
     }
     
-    var bestGame: GameRecord {
+    var bestGame: GameRecord {// данные о лучшем сыгранном раунде
         get {
             guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
                   let record = try? JSONDecoder().decode(GameRecord.self, from: data) else {
@@ -66,7 +52,7 @@ final class StatisticServiceImplementation: StatisticService {
         }
     }
     
-    var statistics: String {
+    var statistics: String { // генерируем текст с данными статистики для алерта
         get {
             var text = ""
             let game = bestGame
@@ -77,6 +63,21 @@ final class StatisticServiceImplementation: StatisticService {
         }
     }
     
+    // MARK: - Methods
+    // обновляем данные статистики после завершения раунда
+    func update(game score: GameRecord) {
+        gamesCount += 1
+        let totalAmount = userDefaults.integer(forKey: Keys.totalQuestionAmount.rawValue)
+        let correctAnswers = userDefaults.integer(forKey: Keys.totalCorrectAnswers.rawValue)
+        
+        userDefaults.set(score.correct + correctAnswers, forKey: Keys.totalCorrectAnswers.rawValue)
+        userDefaults.set(score.total + totalAmount, forKey: Keys.totalQuestionAmount.rawValue)
+        
+        if score.isBetterThan(bestGame) {
+            bestGame = score
+        }
+    }
+    
     //  функция форматирования даты в строку
     private func dateToString(from date: Date) -> String {
         let df = DateFormatter()
@@ -84,12 +85,10 @@ final class StatisticServiceImplementation: StatisticService {
         return df.string(from: date)
     }
     
-    func resetStatistics() {
-        userDefaults.set(nil, forKey: Keys.totalCorrectAnswers.rawValue)
-        userDefaults.set(nil, forKey: Keys.totalQuestionAmount.rawValue)
-        userDefaults.set(nil, forKey: Keys.gamesCount.rawValue)
-        userDefaults.set(nil, forKey: Keys.bestGame.rawValue)
-    }
-    
-    
+    //    func resetStatistics() { // сброс статистики
+    //        userDefaults.set(nil, forKey: Keys.totalCorrectAnswers.rawValue)
+    //        userDefaults.set(nil, forKey: Keys.totalQuestionAmount.rawValue)
+    //        userDefaults.set(nil, forKey: Keys.gamesCount.rawValue)
+    //        userDefaults.set(nil, forKey: Keys.bestGame.rawValue)
+    //    }
 }

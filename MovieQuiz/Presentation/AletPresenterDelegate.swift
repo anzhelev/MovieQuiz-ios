@@ -6,6 +6,5 @@
 //
 
 protocol AlertPresentetDelegate: AnyObject {
-    
     func startNewQuiz()
 }

@@ -1,11 +1,7 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
-    // меняем цвет StatusBar на белый
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
+
     // MARK: - IB Outlets
     @IBOutlet weak private var questionTitleLabel: UILabel!
     @IBOutlet weak private var indexLabel: UILabel!
@@ -17,15 +13,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet weak private var yesButton: UIButton!
     
     // MARK: - Private Properties
+    private let questionsAmount: Int = 10 // количество вопросов в квизе
     private var currentQuestionIndex = 0 // индекс текущего вопроса
     private var correctAnswers = 0 // счетчик правильных ответов
-    
-    private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol? = QuestionFactory()
     private var currentQuestion: QuizQuestion?
     private var gameOverAlert = AlertPresenter()
     private var statisticService = StatisticServiceImplementation()
     
+    // MARK: - Override Properties
+    // меняем цвет StatusBar на белый
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,9 +33,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory?.delegate = self
         gameOverAlert.delegate = self
         questionFactory?.requestNextQuestion()
-        statisticService.resetStatistics()
-        
-        
+//        statisticService.resetStatistics() // обнуляем статистику на старте приложения (для тестирования)
+                
         // формат шрифтов текстовых полей и кнопок
         questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
         noButton.titleLabel?.font = UIFont(name: "SDisplay-Medium", size: 20)
