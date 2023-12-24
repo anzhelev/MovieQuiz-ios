@@ -5,7 +5,7 @@
 //  Created by Andrey Zhelev on 10.12.2023.
 //
 
-class QuestionFactory: QuestionFactoryProtocol {
+final class QuestionFactory: QuestionFactoryProtocol {
     
     weak var delegate: QuestionFactoryDelegate?
     
