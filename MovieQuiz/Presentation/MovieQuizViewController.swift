@@ -11,6 +11,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
   
   @IBOutlet weak private var noButton: UIButton!
   @IBOutlet weak private var yesButton: UIButton!
+  @IBOutlet weak private var activityIndicator: UIActivityIndicatorView!
   
   // MARK: - Private Properties
   private let questionsAmount: Int = 10 // количество вопросов в квизе
@@ -19,6 +20,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
   private var questionFactory: QuestionFactoryProtocol? = QuestionFactory()
   private var currentQuestion: QuizQuestion?
   private var gameOverAlert = AlertPresenter()
+  private var networkErrorAlert = AlertPresenter()
   private var statisticService: StatisticService?
   
   // MARK: - Override Properties
@@ -144,15 +146,33 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
       
       text.append(statisticService?.statistics ?? "")
       
-      let alert = AlertModel(
-        title: "Этот раунд окончен!",
-        message: text,
-        buttonText: "Сыграть ещё раз"
+      let alert = AlertModel(title: "Этот раунд окончен!",
+                             message: text,
+                             buttonText: "Сыграть ещё раз"
       )
       gameOverAlert.showResult(show: alert, where: self)
     } else {  // если остались еще вопросы, переходим к следующему
       currentQuestionIndex += 1
       self.questionFactory?.requestNextQuestion()
     }
+  }
+  
+  private func showLoadingIndicator() {
+    activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
+    activityIndicator.startAnimating() // включаем анимацию
+  }
+  
+  private func hideLoadingIndicator() {
+    activityIndicator.isHidden = true // говорим, что индикатор загрузки скрыт
+    activityIndicator.stopAnimating() // выключаем анимацию
+  }
+  
+  private func showNetworkErrorAlert(message: String) {
+    hideLoadingIndicator()
+    let alert = AlertModel(title: "Ошибка",
+                           message: message,
+                           buttonText: "Попробовать еще раз"
+    )
+    networkErrorAlert.showResult(show: alert, where: self)
   }
 }
