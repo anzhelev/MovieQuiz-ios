@@ -17,7 +17,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
   private let questionsAmount: Int = 10 // количество вопросов в квизе
   private var currentQuestionIndex = 0 // индекс текущего вопроса
   private var correctAnswers = 0 // счетчик правильных ответов
-  private var questionFactory: QuestionFactoryProtocol? = QuestionFactory()
+  private var questionFactory: QuestionFactoryProtocol?
   private var currentQuestion: QuizQuestion?
   private var gameOverAlert = AlertPresenter()
   private var networkErrorAlert = AlertPresenter()
@@ -34,11 +34,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     questionFactory?.delegate = self
     gameOverAlert.delegate = self
+    questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
     statisticService = StatisticServiceImplementation()
-    questionFactory?.requestNextQuestion()
+    
+
+    showLoadingIndicator()
+    questionFactory?.loadData()
     
     // применяем настройки шрифтов
     setupUI()
+    
   }
   
   // MARK: - QuestionFactoryDelegate
@@ -86,14 +91,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     questionLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
   }
   
-  // конвертируем моковый вопрос во вью модель для экрана вопроса
+  // конвертируем загруженные данные во вью модель для экрана вопроса
   private func convert(model: QuizQuestion) -> QuizStepViewModel {
     let currentStep = QuizStepViewModel(
-      image: UIImage(named: model.image) ?? UIImage(),
+      image: UIImage(data: model.image) ?? UIImage(),
       question: model.text,
       questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     return currentStep
   }
+  
   
   // приватный метод вывода на экран нового вопроса
   private func show(quiz step: QuizStepViewModel) {
@@ -166,13 +172,22 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     activityIndicator.isHidden = true // говорим, что индикатор загрузки скрыт
     activityIndicator.stopAnimating() // выключаем анимацию
   }
-  
-  private func showNetworkErrorAlert(message: String) {
+
+   func showNetworkErrorAlert(message: String) {
     hideLoadingIndicator()
     let alert = AlertModel(title: "Ошибка",
                            message: message,
                            buttonText: "Попробовать еще раз"
     )
     networkErrorAlert.showResult(show: alert, where: self)
+  }
+  
+  func didLoadDataFromServer() {
+    hideLoadingIndicator() // скрываем индикатор загрузки
+    questionFactory?.requestNextQuestion()
+  }
+  
+  func didFailToLoadData(with error: Error) {
+    showNetworkErrorAlert(message: error.localizedDescription) // возьмём в качестве сообщения описание ошибки
   }
 }
