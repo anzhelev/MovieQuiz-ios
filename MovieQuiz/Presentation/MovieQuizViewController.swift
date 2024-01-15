@@ -14,11 +14,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet weak private var activityIndicator: UIActivityIndicatorView!
     
     // MARK: - Private Properties
-//    private let questionsAmount: Int = 10 // количество вопросов в квизе
-//    private var currentQuestionIndex = 0 // индекс текущего вопроса
+    //    private let questionsAmount: Int = 10 // количество вопросов в квизе
+    //    private var currentQuestionIndex = 0 // индекс текущего вопроса
     private var correctAnswers = 0 // счетчик правильных ответов
     private var questionFactory: QuestionFactoryProtocol?
-    private var currentQuestion: QuizQuestion?
+    //    private var currentQuestion: QuizQuestion?
     private var gameOverAlert = AlertPresenter()
     private var networkErrorAlert = AlertPresenter()
     private var statisticService: StatisticService?
@@ -34,6 +34,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         super.viewDidLoad()
         
         // задаем свойства
+        presenter.viewController = self
         questionFactory?.delegate = self
         gameOverAlert.delegate = self
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
@@ -53,7 +54,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             return
         }
         
-        currentQuestion = question
+        presenter.currentQuestion = question
         let viewModel = presenter.convert(model: question)
         DispatchQueue.main.async {[weak self] in
             self?.show(quiz: viewModel)
@@ -81,16 +82,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - IB Actions
     // обработка нажатия кнопки НЕТ
     @IBAction private func noButtonDidTapped(_ sender: Any) {
-        if let currentQuestion = currentQuestion {
-            showAnswerResult(isCorrect: currentQuestion.correctAnswer)
-        }
+        //        if let currentQuestion = presenter.currentQuestion {
+        //            showAnswerResult(isCorrect: !currentQuestion.correctAnswer)
+        //
+        //        }
+        presenter.noButtonDidTapped()
     }
     
     // обработка нажатия кнопки ДА
     @IBAction private func yesButtonDidTapped(_ sender: Any) {
-        if let currentQuestion = currentQuestion {
-            showAnswerResult(isCorrect: currentQuestion.correctAnswer)
-        }
+        //        presenter.currentQuestion = currentQuestion
+        presenter.yesButtonDidTapped()
     }
     
     // MARK: - Private Methods
@@ -103,14 +105,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
     }
     
-//    // конвертируем загруженные данные во вью модель для экрана вопроса
-//    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-//        let currentStep = QuizStepViewModel(
-//            image: UIImage(data: model.image) ?? UIImage(),
-//            question: model.text,
-//            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
-//        return currentStep
-//    }
+    //    // конвертируем загруженные данные во вью модель для экрана вопроса
+    //    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+    //        let currentStep = QuizStepViewModel(
+    //            image: UIImage(data: model.image) ?? UIImage(),
+    //            question: model.text,
+    //            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
+    //        return currentStep
+    //    }
     
     // приватный метод вывода на экран нового вопроса
     private func show(quiz step: QuizStepViewModel) {
@@ -124,7 +126,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     // функция отображения реакции на ответ на вопрос и переход к следующему этапу
-    private func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrect: Bool) {
         // отключаем кнопки Да/Нет до показа следующего вопроса
         yesButton.isEnabled = false
         noButton.isEnabled = false
