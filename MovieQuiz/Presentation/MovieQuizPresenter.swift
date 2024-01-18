@@ -11,7 +11,10 @@ final class MovieQuizPresenter {
     
     let questionsAmount: Int = 10
     private var currentQuestionIndex: Int = 0
+    private var correctAnswers: Int = 0
     var currentQuestion: QuizQuestion?
+    var statisticService: StatisticService?
+    var questionFactory: QuestionFactoryProtocol?
     weak var viewController: MovieQuizViewController?
     
     func isLastQuestion() -> Bool {
@@ -20,6 +23,11 @@ final class MovieQuizPresenter {
     
     func resetQuestionIndex() {
         currentQuestionIndex = 0
+        correctAnswers = 0
+    }
+    
+    func correctAnswersIncrement() {
+        correctAnswers += 1
     }
     
     func switchToNextQuestion() {
@@ -38,11 +46,21 @@ final class MovieQuizPresenter {
     
     private func didAnswer(isYes: Bool) {
         if let currentQuestion = currentQuestion {
-           viewController?.showAnswerResult(isCorrect: isYes ? currentQuestion.correctAnswer : !currentQuestion.correctAnswer)
+            viewController?.showAnswerResult(isCorrect: isYes ? currentQuestion.correctAnswer : !currentQuestion.correctAnswer)
         }
     }
     
-    
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+            return
+        }
+        
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async {[weak self] in
+            self?.viewController?.show(quiz: viewModel)
+        }
+    }
     
     // конвертируем загруженные данные во вью модель для экрана вопроса
     func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -53,7 +71,36 @@ final class MovieQuizPresenter {
         return currentStep
     }
     
-    
+    // функция перехода к следующему вопросу или к показу результатов квиза
+    func showNextQuestionOrResults() {
+        if self.isLastQuestion() {// если вопрос был последним, покажем результаты
+            // обновляем статистику раундов
+            statisticService?.store(game:
+                                        GameRecord(
+                                            correct: correctAnswers,
+                                            total: questionsAmount,
+                                            date: Date())
+            )
+            
+            var text = correctAnswers == questionsAmount ?
+            "Поздравляем, у вас 10 из 10!\n" :
+            "Ваш результат: \(correctAnswers)/\(questionsAmount)\n"
+            
+            text.append(statisticService?.statistics ?? "")
+            
+            let alert = AlertModel(title: "Этот раунд окончен!",
+                                   message: text,
+                                   buttonText: "Сыграть ещё раз"
+            )
+            if let viewController {
+                viewController.gameOverAlert.showResult(show: alert, where: viewController)
+            }
+            
+        } else {  // если остались еще вопросы, переходим к следующему
+            switchToNextQuestion()
+            questionFactory?.requestNextQuestion()
+        }
+    }
     
     
 }
