@@ -17,7 +17,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     private let questionsAmount: Int = 10
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
- 
+    
     // MARK: - Initializer
     init(viewController: MovieQuizViewController) {
         self.viewController = viewController
@@ -29,12 +29,15 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     // MARK: - QuestionFactoryDelegate
     func didLoadDataFromServer() {
-        viewController?.hideLoadingIndicator()
         questionFactory?.requestNextQuestion()
     }
     
     func didFailToLoadData(with error: Error) {
         let message = error.localizedDescription
+        viewController?.showNetworkError(message: message)
+    }
+    
+    func showErrorAlert(with message: String) {
         viewController?.showNetworkError(message: message)
     }
     
@@ -48,30 +51,40 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             self?.viewController?.show(quiz: viewModel)
         }
     }
-
+    
     // MARK: - Functions
+    // повторная загрузка данных при ошибке
+    func reloadData() {
+        viewController?.showLoadingIndicator()
+        questionFactory?.loadData()
+    }
+    
     //  проверяем, закончился ли квиз
     func isLastQuestion() -> Bool {
         currentQuestionIndex == questionsAmount - 1
     }
     
     //  увеличиваем счетчик правильных ответов если надо
-    func didAnswer(isCorrectAnswer: Bool) {
-        if isCorrectAnswer {
+    func correctAnswersCount(increace: Bool) {
+        if increace {
             correctAnswers += 1
         }
     }
     
+    // рестарт квиза
     func restartGame() {
         currentQuestionIndex = 0
         correctAnswers = 0
         questionFactory?.requestNextQuestion()
+        viewController?.showLoadingIndicator()
     }
     
+    // увеличиваем счетчик вопросов
     func switchToNextQuestion() {
         currentQuestionIndex += 1
     }
     
+    // конвертер для модели текущего вопроса
     func convert(model: QuizQuestion) -> QuizStepViewModel {
         QuizStepViewModel(
             image: UIImage(data: model.image) ?? UIImage(),
@@ -80,14 +93,17 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         )
     }
     
+    // обработка нажатия кнопки ДА
     func yesButtonClicked() {
         didAnswer(isYes: true)
     }
     
+    // обработка нажатия кнопки НЕТ
     func noButtonClicked() {
         didAnswer(isYes: false)
     }
     
+    // определение правильности ответа
     private func didAnswer(isYes: Bool) {
         viewController?.disableButtons()
         if let currentQuestion = currentQuestion {
@@ -95,8 +111,9 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
+    // визуализация ответа для пользователя
     private func proceedWithAnswer(isCorrect: Bool) {
-        didAnswer(isCorrectAnswer: isCorrect)
+        correctAnswersCount(increace: isCorrect)
         
         viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
         
@@ -106,6 +123,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
+    // обработка результатов квиза
     private func proceedToNextQuestionOrResults() {
         if self.isLastQuestion() {
             statisticService?.store(game:
@@ -127,6 +145,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         } else {
             self.switchToNextQuestion()
             questionFactory?.requestNextQuestion()
+            viewController?.showLoadingIndicator()
         }
     }
 }

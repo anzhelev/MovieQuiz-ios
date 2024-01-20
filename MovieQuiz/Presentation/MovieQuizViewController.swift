@@ -27,7 +27,6 @@ final class MovieQuizViewController: UIViewController {
         
         // свойства
         presenter = MovieQuizPresenter(viewController: self)
-        //          imageView.layer.cornerRadius = 20
         
         // настройки шрифтов
         setupUI()
@@ -47,6 +46,7 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Functions
     // вывод на экран нового вопроса
     func show(quiz step: QuizStepViewModel) {
+        hideLoadingIndicator()
         previewImage.layer.borderColor = UIColor.clear.cgColor
         previewImage.image = step.image
         questionLabel.text = step.question
@@ -81,13 +81,12 @@ final class MovieQuizViewController: UIViewController {
     
     // показать индикатор загрузки
     func showLoadingIndicator() {
-        activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
-        activityIndicator.startAnimating() // включаем анимацию
+        activityIndicator.startAnimating()
     }
     
     // скрыть индикатор загрузки
     func hideLoadingIndicator() {
-        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
     }
     
     // отключить кнопки
@@ -115,10 +114,11 @@ final class MovieQuizViewController: UIViewController {
                                    style: .default) { [weak self] _ in
             guard let self = self else { return }
             
-            self.presenter.restartGame()
+            self.presenter.reloadData()
         }
         
         alert.addAction(action)
+        self.present(alert, animated: true, completion: nil)
     }
     
     // формат шрифтов текстовых полей и кнопок
