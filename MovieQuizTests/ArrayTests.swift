@@ -29,6 +29,5 @@ class ArrayTests: XCTestCase {
         
         // Then
         XCTAssertNil(value)
-//        XCTAssertEqual(value, 2)
     }
 }
