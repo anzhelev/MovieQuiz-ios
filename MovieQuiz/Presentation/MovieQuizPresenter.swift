@@ -23,8 +23,10 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         self.viewController = viewController
         statisticService = StatisticServiceImplementation()
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
-        questionFactory?.loadData()
+        viewController.disableButtons()
         viewController.showLoadingIndicator()
+        questionFactory?.loadData()
+        
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -34,10 +36,12 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     func didFailToLoadData(with error: Error) {
         let message = error.localizedDescription
+        viewController?.hideLoadingIndicator()
         viewController?.showNetworkError(message: message)
     }
     
     func showErrorAlert(with message: String) {
+        viewController?.hideLoadingIndicator()
         viewController?.showNetworkError(message: message)
     }
     
@@ -48,24 +52,27 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         currentQuestion = question
         let viewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
+            self?.viewController?.hideLoadingIndicator()
             self?.viewController?.show(quiz: viewModel)
+            self?.viewController?.enableButtons()
         }
     }
     
     // MARK: - Functions
     // повторная загрузка данных при ошибке
     func reloadData() {
+        viewController?.disableButtons()
         viewController?.showLoadingIndicator()
         questionFactory?.loadData()
     }
     
     //  проверяем, закончился ли квиз
-    func isLastQuestion() -> Bool {
+    private func isLastQuestion() -> Bool {
         currentQuestionIndex == questionsAmount - 1
     }
     
     //  увеличиваем счетчик правильных ответов если надо
-    func correctAnswersCount(increace: Bool) {
+    private func correctAnswersCount(increace: Bool) {
         if increace {
             correctAnswers += 1
         }
@@ -80,7 +87,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     // увеличиваем счетчик вопросов
-    func switchToNextQuestion() {
+    private func switchToNextQuestion() {
         currentQuestionIndex += 1
     }
     
@@ -125,7 +132,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     // обработка результатов квиза
     private func proceedToNextQuestionOrResults() {
-        if self.isLastQuestion() {
+        if isLastQuestion() {
             statisticService?.store(game:
                                         GameRecord(
                                             correct: correctAnswers,

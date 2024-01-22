@@ -43,6 +43,10 @@ final class MovieQuizViewControllerMock: MovieQuizViewControllerProtocol {
         
     }
     
+    func enableButtons() {
+        
+    }
+    
     func disableButtons() {
         
     }

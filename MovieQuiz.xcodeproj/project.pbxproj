@@ -38,6 +38,7 @@
 		D4D534AB2B5007E9009E9C90 /* ArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D534AA2B5007E9009E9C90 /* ArrayTests.swift */; };
 		D4D534BE2B500FEB009E9C90 /* MoviesLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D534B72B500FC1009E9C90 /* MoviesLoaderTests.swift */; };
 		D4F20A702B3F27A40046CE67 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F20A6F2B3F27A40046CE67 /* NetworkClient.swift */; };
+		D4F282672B5EFBBC0009FBB6 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F282662B5EFBBC0009FBB6 /* AlertPresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -125,6 +126,7 @@
 		D4D534B52B500FC1009E9C90 /* MoviesLoaderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoviesLoaderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4D534B72B500FC1009E9C90 /* MoviesLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesLoaderTests.swift; sourceTree = "<group>"; };
 		D4F20A6F2B3F27A40046CE67 /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
+		D4F282662B5EFBBC0009FBB6 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,6 +189,7 @@
 				D434F3732B5C196600B67904 /* MovieQuizViewControllerProtocol.swift */,
 				AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */,
 				D449064F2B55C0AC009EF6EF /* MovieQuizPresenter.swift */,
+				D4F282662B5EFBBC0009FBB6 /* AlertPresenter.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -574,6 +577,7 @@
 				D45163542B26495B003BC90B /* QuizQuestion.swift in Sources */,
 				D451634D2B26430F003BC90B /* QuestionFactory.swift in Sources */,
 				AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */,
+				D4F282672B5EFBBC0009FBB6 /* AlertPresenter.swift in Sources */,
 				AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */,
 				D45163522B264940003BC90B /* QuizResultsViewModel.swift in Sources */,
 				AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */,

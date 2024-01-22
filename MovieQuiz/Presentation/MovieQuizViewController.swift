@@ -20,6 +20,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     
     // MARK: - Private Properties
     private var presenter: MovieQuizPresenter!
+    private var showAlert = AlertPresenter()
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -27,6 +28,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         
         // свойства
         presenter = MovieQuizPresenter(viewController: self)
+        showAlert.delegate = presenter
         
         // настройки шрифтов
         setupUI()
@@ -46,30 +48,20 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     // MARK: - Functions
     // вывод на экран нового вопроса
     func show(quiz step: QuizStepViewModel) {
-        hideLoadingIndicator()
         previewImage.layer.borderColor = UIColor.clear.cgColor
         previewImage.image = step.image
         questionLabel.text = step.question
         indexLabel.text = step.questionNumber
-        enableButtons()
     }
     
     // вывод результата квиза в алерте
     func show(quiz result: QuizResultsViewModel) {
-        let alert = UIAlertController(
-            title: result.title,
-            message: result.text,
-            preferredStyle: .alert)
+        let model = AlertModel(title: result.title,
+                               text: result.text,
+                               buttonText: "Попробовать ещё раз"
+        )
         
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            
-            self.presenter.restartGame()
-        }
-        
-        alert.addAction(action)
-        
-        self.present(alert, animated: true, completion: nil)
+        showAlert.gameResult(alert: model, on: self)
     }
     
     // рисуем рамку постера нужного цвета в зависимости от ответа
@@ -103,22 +95,12 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     
     // показать алерт ошибки сети
     func showNetworkError(message: String) {
-        hideLoadingIndicator()
+        let model = AlertModel(title: "Ошибка",
+                               text: message,
+                               buttonText: "Попробовать ещё раз"
+        )
         
-        let alert = UIAlertController(
-            title: "Ошибка",
-            message: message,
-            preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: "Попробовать ещё раз",
-                                   style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            
-            self.presenter.reloadData()
-        }
-        
-        alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
+        showAlert.networkError(alert: model, on: self)
     }
     
     // формат шрифтов текстовых полей и кнопок

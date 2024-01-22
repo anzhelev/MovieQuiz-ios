@@ -8,7 +8,7 @@ import Foundation
 
 final class QuestionFactory: QuestionFactoryProtocol {
     
-    var delegate: QuestionFactoryDelegate?
+    weak var delegate: QuestionFactoryDelegate?
     
     private let moviesLoader: MoviesLoadingProtocol
     private var movies: [MostPopularMovie] = []
@@ -47,7 +47,6 @@ final class QuestionFactory: QuestionFactoryProtocol {
             do {
                 imageData = try Data(contentsOf: movie.imageURL)
             } catch {
-                print("Failed to load image")
                 DispatchQueue.main.async {
                     self.delegate?.showErrorAlert(with: "Не удалось загрузить постер фильма")
                 }
