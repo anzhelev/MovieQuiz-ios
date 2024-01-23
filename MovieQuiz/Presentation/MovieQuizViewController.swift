@@ -34,19 +34,8 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         setupUI()
     }
     
-    // MARK: - Actions
-    // обработка нажатия кнопки ДА
-    @IBAction private func yesButtonDidTapped(_ sender: Any) {
-        presenter.yesButtonClicked()
-    }
-    
-    // обработка нажатия кнопки НЕТ
-    @IBAction private func noButtonDidTapped(_ sender: Any) {
-        presenter.noButtonClicked()
-    }
-    
-    // MARK: - Functions
-    // вывод на экран нового вопроса
+    // MARK: - Public methods
+    /// вывод на экран нового вопроса
     func show(quiz step: QuizStepViewModel) {
         previewImage.layer.borderColor = UIColor.clear.cgColor
         previewImage.image = step.image
@@ -54,56 +43,62 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         indexLabel.text = step.questionNumber
     }
     
-    // вывод результата квиза в алерте
-    func show(quiz result: QuizResultsViewModel) {
-        let model = AlertModel(title: result.title,
-                               text: result.text,
-                               buttonText: "Попробовать ещё раз"
-        )
-        
-        showAlert.gameResult(alert: model, on: self)
+    /// вывод результата квиза в алерте
+    func show(quiz result: AlertModel) {
+        showAlert.gameResult(alert: result, on: self)
     }
     
-    // рисуем рамку постера нужного цвета в зависимости от ответа
+    /// показать алерт ошибки сети
+    func showNetworkError(message: String) {
+        let model = AlertModel(title: "Ошибка",
+                               text: message,
+                               buttonText: "Попробовать ещё раз"
+        )
+        showAlert.networkError(alert: model, on: self)
+    }
+        
+    /// рисуем рамку постера нужного цвета в зависимости от ответа
     func highlightImageBorder(isCorrectAnswer: Bool) {
         previewImage.layer.masksToBounds = true
         previewImage.layer.borderWidth = 8
         previewImage.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
     }
     
-    // показать индикатор загрузки
+    /// показать индикатор загрузки
     func showLoadingIndicator() {
         activityIndicator.startAnimating()
     }
     
-    // скрыть индикатор загрузки
+    /// скрыть индикатор загрузки
     func hideLoadingIndicator() {
         activityIndicator.stopAnimating()
     }
     
-    // отключить кнопки
+    /// отключить кнопки ДА/НЕТ
     func disableButtons() {
         yesButton.isEnabled = false
         noButton.isEnabled = false
     }
     
-    // включить кнопки
+    /// включить кнопки ДА/НЕТ
     func enableButtons() {
         yesButton.isEnabled = true
         noButton.isEnabled = true
     }
     
-    // показать алерт ошибки сети
-    func showNetworkError(message: String) {
-        let model = AlertModel(title: "Ошибка",
-                               text: message,
-                               buttonText: "Попробовать ещё раз"
-        )
-        
-        showAlert.networkError(alert: model, on: self)
+    // MARK: - IBAction
+    /// обработка нажатия кнопки ДА
+    @IBAction private func yesButtonDidTapped(_ sender: Any) {
+        presenter.yesButtonClicked()
     }
     
-    // формат шрифтов текстовых полей и кнопок
+    /// обработка нажатия кнопки НЕТ
+    @IBAction private func noButtonDidTapped(_ sender: Any) {
+        presenter.noButtonClicked()
+    }
+    
+    // MARK: - Private Methods
+    /// формат шрифтов текстовых полей и кнопок
     private func setupUI() {
         questionTitleLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
         noButton.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 20)

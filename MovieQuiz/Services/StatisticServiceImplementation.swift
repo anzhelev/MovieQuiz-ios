@@ -66,7 +66,7 @@ final class StatisticServiceImplementation: StatisticService {
     }
     
     // MARK: - Methods
-    // обновляем данные статистики после завершения раунда
+    /// обновляем данные статистики после завершения раунда
     func store(game score: GameRecord) {
         gamesCount += 1
         let totalAmount = userDefaults.integer(forKey: Keys.totalQuestionAmount.rawValue)
@@ -80,7 +80,7 @@ final class StatisticServiceImplementation: StatisticService {
         }
     }
     
-    //  функция форматирования даты в строку
+    ///  функция форматирования даты в строку
     private func dateToString(from date: Date) -> String {
         let df = DateFormatter()
         df.dateFormat = "dd.MM.YY HH:mm"

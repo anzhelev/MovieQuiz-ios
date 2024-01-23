@@ -23,7 +23,6 @@
 		D44906502B55C0AC009EF6EF /* MovieQuizPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D449064F2B55C0AC009EF6EF /* MovieQuizPresenter.swift */; };
 		D451634D2B26430F003BC90B /* QuestionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451634C2B26430F003BC90B /* QuestionFactory.swift */; };
 		D45163502B264921003BC90B /* QuizStepViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451634F2B264921003BC90B /* QuizStepViewModel.swift */; };
-		D45163522B264940003BC90B /* QuizResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45163512B264940003BC90B /* QuizResultsViewModel.swift */; };
 		D45163542B26495B003BC90B /* QuizQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45163532B26495B003BC90B /* QuizQuestion.swift */; };
 		D45163562B27A136003BC90B /* QuestionFactoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45163552B27A136003BC90B /* QuestionFactoryProtocol.swift */; };
 		D45163582B28CC55003BC90B /* QuestionFactoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45163572B28CC55003BC90B /* QuestionFactoryDelegate.swift */; };
@@ -106,7 +105,6 @@
 		D449064F2B55C0AC009EF6EF /* MovieQuizPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieQuizPresenter.swift; sourceTree = "<group>"; };
 		D451634C2B26430F003BC90B /* QuestionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactory.swift; sourceTree = "<group>"; };
 		D451634F2B264921003BC90B /* QuizStepViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizStepViewModel.swift; sourceTree = "<group>"; };
-		D45163512B264940003BC90B /* QuizResultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResultsViewModel.swift; sourceTree = "<group>"; };
 		D45163532B26495B003BC90B /* QuizQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizQuestion.swift; sourceTree = "<group>"; };
 		D45163552B27A136003BC90B /* QuestionFactoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactoryProtocol.swift; sourceTree = "<group>"; };
 		D45163572B28CC55003BC90B /* QuestionFactoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactoryDelegate.swift; sourceTree = "<group>"; };
@@ -274,7 +272,6 @@
 				D4A6E7142B41BAE1001BE5D8 /* MostPopularMovies.swift */,
 				D45163532B26495B003BC90B /* QuizQuestion.swift */,
 				D451634F2B264921003BC90B /* QuizStepViewModel.swift */,
-				D45163512B264940003BC90B /* QuizResultsViewModel.swift */,
 				D46FA2692B29B0A300143728 /* AlertModel.swift */,
 				D48EBD092B35AD1C00DB9001 /* GameRecord.swift */,
 			);
@@ -579,7 +576,6 @@
 				AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */,
 				D4F282672B5EFBBC0009FBB6 /* AlertPresenter.swift in Sources */,
 				AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */,
-				D45163522B264940003BC90B /* QuizResultsViewModel.swift in Sources */,
 				AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */,
 				D48EBD0C2B35AEEE00DB9001 /* StatisticServiceImplementation.swift in Sources */,
 				D48EBD0A2B35AD1C00DB9001 /* GameRecord.swift in Sources */,
@@ -876,7 +872,7 @@
 				DEVELOPMENT_TEAM = X4BLSQ8U23;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.MovieQuizPresenterTests;
@@ -900,7 +896,7 @@
 				DEVELOPMENT_TEAM = X4BLSQ8U23;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.MovieQuizPresenterTests;
@@ -922,7 +918,7 @@
 				DEVELOPMENT_TEAM = X4BLSQ8U23;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.MovieQuizUITests;
@@ -945,7 +941,7 @@
 				DEVELOPMENT_TEAM = X4BLSQ8U23;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.MovieQuizUITests;
@@ -967,7 +963,7 @@
 				DEVELOPMENT_TEAM = X4BLSQ8U23;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.MovieQuizUITests2;
@@ -990,7 +986,7 @@
 				DEVELOPMENT_TEAM = X4BLSQ8U23;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.MovieQuizUITests2;
@@ -1013,7 +1009,7 @@
 				DEVELOPMENT_TEAM = X4BLSQ8U23;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.MovieQuizTests;
@@ -1037,7 +1033,7 @@
 				DEVELOPMENT_TEAM = X4BLSQ8U23;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.MovieQuizTests;
@@ -1060,7 +1056,7 @@
 				DEVELOPMENT_TEAM = X4BLSQ8U23;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.ArrayTests;
@@ -1084,7 +1080,7 @@
 				DEVELOPMENT_TEAM = X4BLSQ8U23;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.ArrayTests;
@@ -1107,7 +1103,7 @@
 				DEVELOPMENT_TEAM = X4BLSQ8U23;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.MoviesLoaderTests;
@@ -1131,7 +1127,7 @@
 				DEVELOPMENT_TEAM = X4BLSQ8U23;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.MoviesLoaderTests;

@@ -27,7 +27,7 @@ final class MovieQuizViewControllerMock: MovieQuizViewControllerProtocol {
         
     }
     
-    func show(quiz result: QuizResultsViewModel) {
+    func show(quiz result: AlertModel) {
         
     }
     

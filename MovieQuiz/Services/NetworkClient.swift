@@ -16,6 +16,7 @@ struct NetworkClient: NetworkRouting { // Отвечает за загрузку
         case codeError
     }
     
+    /// получение данных из сети по запросу
     func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void) {
         let request = URLRequest(url: url)
         

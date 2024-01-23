@@ -14,7 +14,7 @@ struct MoviesLoader: MoviesLoadingProtocol {
         self.networkClient = networkClient
     }
     // MARK: - URL
-    private var mostPopularMoviesUrl: URL {
+    private var mostPopularMoviesUrl: URL {// готовим URL для загрузки данных
         // Если мы не смогли преобразовать строку в URL, то приложение упадёт с ошибкой
         guard let url = URL(string: "https://tv-api.com/en/API/Top250Movies/k_zcuw1ytf") else {
             preconditionFailure("Unable to construct mostPopularMoviesUrl")
@@ -22,6 +22,7 @@ struct MoviesLoader: MoviesLoadingProtocol {
         return url
     }
     
+    /// загружаем данные и пробуем декодировать из  JSON
     func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void) {
         networkClient.fetch(url: mostPopularMoviesUrl) { result in
             switch result {

@@ -18,6 +18,7 @@ final class QuestionFactory: QuestionFactoryProtocol {
         self.delegate = delegate
     }
     
+    /// загружаем данные и формируем массив ТОП-250 фильмов с IMDB
     func loadData() {
         moviesLoader.loadMovies { [weak self] result in
             DispatchQueue.main.async {
@@ -37,6 +38,7 @@ final class QuestionFactory: QuestionFactoryProtocol {
         }
     }
     
+    /// загружаем постер к фильму и генерируем новый вопрос с рандомным условием
     func requestNextQuestion() {
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
