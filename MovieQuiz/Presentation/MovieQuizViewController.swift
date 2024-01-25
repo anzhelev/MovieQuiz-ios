@@ -20,7 +20,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     
     // MARK: - Private Properties
     private var presenter: MovieQuizPresenter!
-    private var showAlert = AlertPresenter()
+    private var alertPresenter = AlertPresenter()
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -28,7 +28,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         
         // свойства
         presenter = MovieQuizPresenter(viewController: self)
-        showAlert.delegate = presenter
+        alertPresenter.delegate = presenter
         
         // настройки шрифтов
         setupUI()
@@ -45,7 +45,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     
     /// вывод результата квиза в алерте
     func show(quiz result: AlertModel) {
-        showAlert.gameResult(alert: result, on: self)
+        alertPresenter.gameResult(alert: result, on: self)
     }
     
     /// показать алерт ошибки сети
@@ -54,7 +54,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
                                text: message,
                                buttonText: "Попробовать ещё раз"
         )
-        showAlert.networkError(alert: model, on: self)
+        alertPresenter.networkError(alert: model, on: self)
     }
         
     /// рисуем рамку постера нужного цвета в зависимости от ответа
