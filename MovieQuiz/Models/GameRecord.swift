@@ -1,11 +1,6 @@
-//
-//  GameRecord.swift
-//  MovieQuiz
-//
-//  Created by Andrey Zhelev on 22.12.2023.
-//
 import Foundation
 
+///  структура записи результата игры для обновления статистики
 struct GameRecord: Codable {
     let correct: Int
     let total: Int

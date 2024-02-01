@@ -1,9 +1,3 @@
-//
-//  MovieQuizPresenter.swift
-//  MovieQuiz
-//
-//  Created by Andrey Zhelev on 15.01.2024.
-//
 import Foundation
 import UIKit
 
@@ -150,7 +144,10 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             let viewModel = AlertModel(
                 title: "Этот раунд окончен!",
                 text: text,
-                buttonText: "Сыграть ещё раз")
+                buttonText: "Сыграть ещё раз",
+                completion:  {[weak self] _ in
+                    self?.restartGame()
+                })
             
             viewController?.show(quiz: viewModel)
         } else {

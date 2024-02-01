@@ -1,12 +1,4 @@
-//
-//  MovieQuizUITests.swift
-//  MovieQuizUITests
-//
-//  Created by Andrey Zhelev on 12.01.2024.
-//
-
 import XCTest
-
 
 class MovieQuizUITests: XCTestCase {
     // swiftlint:disable:next implicitly_unwrapped_optional

@@ -28,7 +28,6 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         
         // свойства
         presenter = MovieQuizPresenter(viewController: self)
-        alertPresenter.delegate = presenter
         
         // настройки шрифтов
         setupUI()
@@ -45,18 +44,21 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     
     /// вывод результата квиза в алерте
     func show(quiz result: AlertModel) {
-        alertPresenter.gameResult(alert: result, on: self)
+        alertPresenter.showAlert(alert: result, on: self)
     }
     
     /// показать алерт ошибки сети
     func showNetworkError(message: String) {
         let model = AlertModel(title: "Ошибка",
                                text: message,
-                               buttonText: "Попробовать ещё раз"
-        )
-        alertPresenter.networkError(alert: model, on: self)
-    }
+                               buttonText: "Попробовать ещё раз",
+                               completion: {[weak self] _ in
+            self?.presenter?.reloadData()
+        })
         
+        alertPresenter.showAlert(alert: model, on: self)
+    }
+    
     /// рисуем рамку постера нужного цвета в зависимости от ответа
     func highlightImageBorder(isCorrectAnswer: Bool) {
         previewImage.layer.masksToBounds = true
