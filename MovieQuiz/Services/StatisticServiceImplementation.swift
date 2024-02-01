@@ -1,9 +1,3 @@
-//
-//  StatisticServiceImplementation.swift
-//  MovieQuiz
-//
-//  Created by Andrey Zhelev on 22.12.2023.
-//
 import Foundation
 
 final class StatisticServiceImplementation: StatisticService {

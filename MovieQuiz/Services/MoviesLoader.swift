@@ -1,9 +1,3 @@
-//
-//  MoviesLoader.swift
-//  MovieQuiz
-//
-//  Created by Andrey Zhelev on 31.12.2023.
-//
 import Foundation
 
 struct MoviesLoader: MoviesLoadingProtocol {
